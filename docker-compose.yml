@@ -1,0 +1,33 @@
+---
+version: "3.7"
+
+services:
+
+  ## MySQL container
+  mysql:
+    container_name: pkg-zone-mysql-psxpatches
+    image: 'mysql/mysql-server:8.0'
+    ports:
+      - '3006:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: 'laravel'
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_DATABASE: 'laravel-psxpatches'
+      MYSQL_USER: 'laravel'
+      MYSQL_PASSWORD: 'laravel'
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+    volumes:
+      - 'psxpatches-mysql8:/var/lib/mysql'
+      # - '/var/lib/mysql:/var/libmysql'
+    networks:
+      - psxpatches-network
+
+# Persistent volume for MySQL
+volumes:
+  psxpatches-mysql8:
+    driver: local
+
+# DEV Network for local psxpatches
+networks:
+  psxpatches-network:
+    driver: bridge
