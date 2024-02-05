@@ -3,10 +3,17 @@
 @section('title', 'Home')
 
 @section('content')
+
+
+<div class="mt-16 text-center">
+    <h1 class="mb-8 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">PSX Patches</h1>
+    <p class="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">A public archive for PS4 and PS5 patches. Work in progress.</p>
+</div>
+
 <!-- Stats -->    
-<div class="w-full bg-white rounded-lg shadow dark:bg-dark-eval-1 ">
+<div class="w-full bg-white rounded-lg shadow dark:bg-dark-eval-0">
     <div>
-        <div class="p-4 bg-white rounded-lg md:p-8 dark:bg-dark-eval-1" id="stats" >
+        <div class="p-4 bg-white rounded-lg md:p-8 dark:bg-dark-eval-0" id="stats" >
             <dl class="grid max-w-screen-xl grid-cols-2 gap-8 p-4 mx-auto text-gray-900 sm:grid-cols-3 xl:grid-cols-3 dark:text-white sm:p-8">
                 <div class="flex flex-col items-center justify-center">
                     <dt class="mb-2 text-3xl font-extrabold">{{ $total_games }}</dt>
@@ -36,7 +43,7 @@
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
             </svg>
         </div>
-        <input type="text" id="liveSearchInput" class="block w-full p-4 ps-10 text-sm dark:text-white text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-red-500 focus:border-red-500 dark:bg-dark-eval-1 dark:border-gray-600 dark:placeholder-white dark:ring-red-500 dark:border-red-500" placeholder="Search" required>
+        <input type="text" id="liveSearchInput" class="block w-full p-4 ps-10 text-sm dark:text-white text-gray-900 border border-black rounded-lg bg-gray-50 focus:ring-red-500 focus:border-red-500 dark:bg-dark-eval-1 dark:border-gray-600 dark:placeholder-white dark:ring-red-500 dark:border-red-500" placeholder="Search" required>
         <button type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-red-500 dark:hover:bg-red-700 dark:ring-red-800">Search</button>
         <div id="liveSearchDropdown" class="hidden absolute mt-1 bg-white rounded-md shadow-lg dark:bg-dark-eval-1">
             <!-- Dropdown items -->
@@ -46,17 +53,15 @@
 </div>
 <!-- End search -->
 
-
 <!-- Cards -->
 <div class="flex flex-wrap justify-center items-stretch mt-8 space-x-4">
     @foreach($games as $game)
-        <div class="w-72 h-104 bg-white border-white rounded-lg shadow dark:bg-dark-eval-0 dark:border-gray-700 mb-8 mt-4">
+        <div class="w-72 h-104 bg-white border-black rounded-lg shadow dark:bg-dark-eval-1 dark:border-gray-700 mb-8 mt-4">
             <a href="{{ route('details', ['title_id' => $game->title_id]) }}" class="h-3/4 block">
-                @if($game->icon)
+                @if(isset($game->icon) && $game->icon !== '')
                     <img class="h-full w-full rounded-t-lg object-cover" src="{{ Storage::url($game->icon) }}" alt="" />
                 @else
-                    <!-- Placeholder or fallback image -->
-                    <div class="h-full w-full bg-gray-200"></div>
+                <img class="h-full w-full rounded-t-lg object-cover" src="{{ Storage::url('games/fallback.jpg') }}" alt="" />
                 @endif
             </a>
             <div class="p-5 flex flex-col h-1/3">
@@ -70,6 +75,7 @@
     {{ $games->links() }}
 </div>
 <!-- End of cards -->
+
 <script>
 const liveSearchInput = document.getElementById('liveSearchInput');
 const liveSearchDropdown = document.getElementById('liveSearchDropdown');

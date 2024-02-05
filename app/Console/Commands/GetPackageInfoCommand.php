@@ -35,7 +35,7 @@ class GetPackageInfoCommand extends Command
                 default:
 
             }
-
+            //$this->info($region);
             $url = 'https://web.np.playstation.com/api/graphql/v1/op';
             $headers = ['x-psn-store-locale-override' => $region];
             $payload = [
@@ -90,6 +90,8 @@ class GetPackageInfoCommand extends Command
                 }
 
             }
+
+            $this->info('Processed: ' . $game->title_id);
         }
     }
 

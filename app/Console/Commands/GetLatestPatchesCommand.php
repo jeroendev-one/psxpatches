@@ -32,7 +32,8 @@ class GetLatestPatchesCommand extends Command
      */
     public function handle()
     {
-        $chunkSize = 5400;
+        
+        $chunkSize = 50;
         $totalEntries = Game::where('title_id', 'like', 'CUSA%')->count();
         $totalChunks = ceil($totalEntries / $chunkSize);
 
@@ -43,7 +44,7 @@ class GetLatestPatchesCommand extends Command
             // Dispatch a job for each range with start and end values
             ProcessPatchesJob::dispatch($start, $end)->onQueue('high');
         }
-
+        
         $this->info('Jobs dispatched successfully.');
     }
 }

@@ -209,7 +209,7 @@ return [
                 'connection' => 'redis',
                 'queue' => ['high'],
                 'balance' => 'simple',
-                'processes' => 3,
+                'processes' => 5,
                 'tries' => 3,
             ],
         ],

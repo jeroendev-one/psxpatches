@@ -24,11 +24,9 @@
     @stack('scripts')
 </head>
 @include('components.navbar')
-<body class="font-sans antialiased bg-white dark:bg-dark-eval-1">
+<body class="font-sans antialiased bg-white dark:bg-dark-eval-0">
 
     <div class="min-h-screen">
-        <!-- Navbar -->
-        
 
         <!-- Page Content -->
         <main class="mt-16 ">
