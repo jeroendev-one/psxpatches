@@ -66,6 +66,8 @@ class GetPackageInfoCommand extends Command
                 $iconUrl = $this->getIcon($jsonResponse);
             
                 if ($iconUrl) {
+                    $this->info($iconUrl);
+                    $this->info($game->icon);
                     $extension = pathinfo($iconUrl, PATHINFO_EXTENSION);
                     $localPath = "games/{$game->title_id}/icon0.{$extension}";
             

@@ -29,9 +29,7 @@ class WebController extends Controller
     public function getDetails($title_id) {
         $game = Game::with(['patches' => function ($query) {
             $query->orderByDesc('version');
-        }])
-        ->where('title_id', $title_id)
-        ->first();
+        }])->where('title_id', $title_id)->first();
     
         if (!$game) {
             abort(404);

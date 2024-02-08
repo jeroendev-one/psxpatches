@@ -30,6 +30,8 @@ class GetSingleLatestPatchCommand extends Command
      */
     public function handle(): void
     {
+
+        
         $games = Game::where('title_id', 'CUSA46853')->get();
     
         foreach ($games as $game) {
