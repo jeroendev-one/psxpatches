@@ -32,27 +32,10 @@ class GetLatestPatchesCommand extends Command
      */
     public function handle()
     {
-        while (true) {
-            $this->processPatches();
-            $this->info('All patches processed. Starting over...');
-        }
-    }
-
-    private function processPatches()
-    {
-        $chunkSize = 50;
-        $totalEntries = Game::where('title_id', 'like', 'CUSA%')->count();
-        $totalChunks = ceil($totalEntries / $chunkSize);
-
-        for ($chunkNumber = 0; $chunkNumber < $totalChunks; $chunkNumber++) {
-            $start = $chunkNumber * $chunkSize;
-            $end = min($start + $chunkSize - 1, $totalEntries - 1);
+        // Dispatch the job to process patches
+        ProcessPatchesJob::dispatch()->onQueue('high');
         
-            // Dispatch a job for each range with start and end values
-            ProcessPatchesJob::dispatch($start, $end)->onQueue('high');
-        }
-
-        $this->info('Jobs dispatched successfully.');
+        $this->info('Patch processing job dispatched successfully.');
     }
 }
 /*
