@@ -25,13 +25,13 @@ class ProcessPatchesJob implements ShouldQueue
     public $end;
 
     public $timeout = 900;
-
+/*
     public function __construct($start, $end)
     {
         $this->start = $start;
         $this->end = $end;
     }
-
+*/
     /**
      * Execute the job.
      */
