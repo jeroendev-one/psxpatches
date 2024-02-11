@@ -40,7 +40,7 @@ class GetPackageInfoCommand extends Command
         foreach ($jsonResponse['data']['productRetrieve']['concept']['media'] as $media) {
             if (isset($media['role']) && $media['role'] == 'MASTER') {
                 $icon = $media['url'];
-                dd($icon);
+
                 if(isset($icon)) {
                     return $icon;
                 }

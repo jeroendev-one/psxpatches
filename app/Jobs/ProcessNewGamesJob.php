@@ -85,6 +85,11 @@ public function handle(): void
                 ]);
 
                 Log::channel('games')->info("New patch created for game: $titleId - Version: $xmlVersion");
+                
+                // Call packageinfo get command to update info
+                $this->call('get:packageinfo', [
+                    '--title_id' => $titleId
+                ]);
             }
         } else {
             Log::channel('games')->info("Skipping title: $titleId (already exists)");
