@@ -197,12 +197,22 @@ return [
 
     'environments' => [
         'production' => [
-            'supervisor-1' => [
+            'supervisor-patches' => [
                 'maxProcesses' => 10,
                 'balanceMaxShift' => 1,
                 'balanceCooldown' => 3,
                 'connection' => 'redis',
                 'queue' => ['high'],
+                'balance' => 'simple',
+                'processes' => 5,
+                'tries' => 3,
+            ],
+            'supervisor-games' => [
+                'maxProcesses' => 10,
+                'balanceMaxShift' => 1,
+                'balanceCooldown' => 3,
+                'connection' => 'redis',
+                'queue' => ['new_games'],
                 'balance' => 'simple',
                 'processes' => 5,
                 'tries' => 3,

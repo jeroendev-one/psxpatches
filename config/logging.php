@@ -52,6 +52,12 @@ return [
     */
 
     'channels' => [
+        'games' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/games.log'),
+            'level' => 'debug',
+        ],
+
         'patches' => [
             'driver' => 'single',
             'path' => storage_path('logs/patches.log'),
