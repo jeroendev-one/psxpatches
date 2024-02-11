@@ -8,14 +8,54 @@ use GuzzleHttp\Client;
 
 class GetPackageInfoCommand extends Command
 {
-    protected $signature = 'get:packageinfo';
+    protected $signature = 'get:packageinfo {--title_id= : Optional title_id for update}';
     protected $description = 'Retrieve concept ID for a PlayStation product.';
 
-    public function handle() {
-        //$content_ids = Game::whereNotNull('content_id')->where('content_id', 'like', 'UP%')->pluck('content_id');
-        $games = Game::whereNotNull('content_id')->get();
+    public function handle()
+    {
+        $titleId = $this->option('title_id');
+    
+        if ($titleId) {
+            // If a title_id is provided, retrieve only that specific game
+            $game = Game::where('title_id', $titleId)->whereNotNull('content_id')->first();
+    
+            if ($game) {
+                // Process the single game
+                $this->processGame($game);
+            } else {
+                $this->error("No game found with title_id: $titleId");
+            }
+        } else {
+            // If no title_id is provided, retrieve all games
+            $games = Game::whereNotNull('content_id')->get();
+    
+            foreach ($games as $game) {
+                // Process each game in the loop
+                $this->processGame($game);
+            }
+        }
+    }
 
-        foreach($games as $game) {
+    private function getIcon(array $jsonResponse) {
+        foreach ($jsonResponse['data']['productRetrieve']['concept']['media'] as $media) {
+            if (isset($media['role']) && $media['role'] == 'MASTER') {
+                $icon = $media['url'];
+                dd($icon);
+                if(isset($icon)) {
+                    return $icon;
+                }
+            }
+        }
+    }
+
+    private function getPublisher(array $jsonResponse) {
+        $publisher = $jsonResponse['data']['productRetrieve']['concept']['publisherName'];
+        if($publisher) {
+            return $publisher;
+        }
+    }
+
+    private function processGame($game) {
 
             //$this->info('Processing: ' . $game->title_id);
             //$this->info($game->content_id);
@@ -46,11 +86,11 @@ class GetPackageInfoCommand extends Command
 
             $client = new Client();
             $response = $client->get($url, ['headers' => $headers, 'query' => $payload]);
-
+            
             if ($response->getStatusCode() !== 200) {
                 $this->error('Request failed');
                 $this->error('Status code: ' . $response->getStatusCode());
-                continue;
+                return;
             }
             
             $jsonResponse = json_decode($response->getBody(), true);
@@ -58,7 +98,7 @@ class GetPackageInfoCommand extends Command
             if (isset($jsonResponse['errors'])) {
                 $this->info($game->title_id . ' Encountered JSON error.' . PHP_EOL);
                 //dd($jsonResponse);
-                continue;
+                return;
             }
 
 
@@ -96,24 +136,3 @@ class GetPackageInfoCommand extends Command
             $this->info('Processed: ' . $game->title_id);
         }
     }
-
-
-    private function getIcon(array $jsonResponse) {
-        foreach ($jsonResponse['data']['productRetrieve']['concept']['media'] as $media) {
-            if (isset($media['role']) && $media['role'] == 'MASTER') {
-                $icon = $media['url'];
-                dd($icon);
-                if(isset($icon)) {
-                    return $icon;
-                }
-            }
-        }
-    }
-
-    private function getPublisher(array $jsonResponse) {
-        $publisher = $jsonResponse['data']['productRetrieve']['concept']['publisherName'];
-        if($publisher) {
-            return $publisher;
-        }
-    }
-}
