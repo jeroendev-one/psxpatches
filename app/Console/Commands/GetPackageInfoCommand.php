@@ -50,15 +50,13 @@ class GetPackageInfoCommand extends Command
 
     private function getPublisher(array $jsonResponse) {
         $publisher = $jsonResponse['data']['productRetrieve']['concept']['publisherName'];
+
         if($publisher) {
             return $publisher;
         }
     }
 
     private function processGame($game) {
-
-            //$this->info('Processing: ' . $game->title_id);
-            //$this->info($game->content_id);
             
             $region = substr($game->content_id, 0, 2);
 
